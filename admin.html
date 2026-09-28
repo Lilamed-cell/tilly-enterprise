@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self'; form-action 'none'; base-uri 'self'; object-src 'none'; frame-src 'none';" />
+<meta name="referrer" content="no-referrer" />
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+<title>Admin Console — TheTilly Enterprise</title>
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<div class="login-page" id="loginPage">
+  <div class="login-box">
+    <div class="lock-icon">🔐</div>
+    <h1 id="loginTitle">Administrator Login</h1>
+    <p class="sub" id="loginSub">Enter your password to manage TheTilly Enterprise.</p>
+    <div class="err" id="loginErr" role="alert"></div>
+    <form id="loginForm" autocomplete="off" novalidate>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" id="pw1" autocomplete="current-password" required />
+      </label>
+      <label class="field" id="confirmWrap" hidden>
+        <span>Confirm password</span>
+        <input type="password" id="pw2" autocomplete="new-password" />
+      </label>
+      <div class="pw-meter" id="pwMeter" hidden>
+        <div class="pw-meter-bar"><div class="pw-meter-fill" id="pwFill"></div></div>
+        <small id="pwHint">Use 10+ characters with letters, numbers &amp; symbols</small>
+      </div>
+      <button class="btn-save" type="submit" id="loginBtn">Unlock</button>
+    </form>
+    <p class="forgot-row" id="forgotRow" hidden>
+      <a href="#" id="forgotPw">Forgot password?</a>
+    </p>
+  </div>
+</div>
+
+<div class="admin" id="adminPanel" hidden>
+  <div class="admin-top">
+    <h2>⚙️ Admin Console <small id="adminStatus">· secure session active</small></h2>
+    <button class="abtn ghost" id="lockBtn">🔒 Lock</button>
+    <button class="abtn ghost" id="logoutBtn">Log out</button>
+    <a class="abtn ghost" href="index.html">View site ↗</a>
+  </div>
+
+  <nav class="admin-tabs">
+    <button class="atab active" data-tab="products">📦 Products</button>
+    <button class="atab" data-tab="settings">🏪 Store Settings</button>
+    <button class="atab" data-tab="security">🔑 Security</button>
+    <button class="atab" data-tab="backup">💾 Backup &amp; Restore</button>
+  </nav>
+
+  <div class="admin-body">
+
+    <section class="apanel active" id="tab-products">
+      <div class="acard">
+        <div class="head-row">
+          <div>
+            <h3>Product Catalogue</h3>
+            <p class="hint" id="prodCount">0 products</p>
+          </div>
+          <button class="abtn primary" id="addProductBtn">+ Add Product</button>
+        </div>
+        <input class="admin-search" id="adminSearch" type="search"
+               placeholder="Search products…" autocomplete="off" />
+        <div id="adminProducts"></div>
+      </div>
+    </section>
+
+    <section class="apanel" id="tab-settings">
+      <div class="acard">
+        <h3>Brand &amp; Contact</h3>
+        <p class="hint">These details appear across the public site.</p>
+        <div class="agrid">
+          <label class="field"><span>Store name</span><input id="sName" maxlength="60" /></label>
+          <label class="field"><span>Currency symbol</span><input id="sCurrency" maxlength="4" /></label>
+          <label class="field"><span>WhatsApp number</span><input id="sWhatsapp" maxlength="20" /><small>Country code + number, digits only.</small></label>
+          <label class="field"><span>Footer company name</span><input id="sFootName" maxlength="80" /></label>
+          <label class="field full"><span>Top announcement bar</span><textarea id="sTopbar" maxlength="200"></textarea></label>
+          <label class="field full">
+            <span>Hero background image</span>
+            <div class="img-input-row">
+              <input id="sHeroBg" maxlength="2000000" placeholder="https://…/photo.jpg  — or upload a file" />
+              <button type="button" class="abtn ghost" id="heroBgUploadBtn">📁 Upload</button>
+              <button type="button" class="abtn ghost" id="heroBgClearBtn">✕ Clear</button>
+            </div>
+            <input type="file" id="heroBgFile" accept="image/*" hidden />
+            <div class="img-preview" id="heroBgPreview" hidden><img alt="" /></div>
+            <small>Recommended: 1600×900 or wider. Large files are auto-resized.</small>
+          </label>
+        </div>
+      </div>
+      <div class="acard">
+        <h3>Homepage Hero</h3>
+        <p class="hint">The big headline at the top of the storefront.</p>
+        <label class="field"><span>Headline</span><textarea id="sHeroTitle" maxlength="120"></textarea></label>
+        <label class="field"><span>Sub-text</span><textarea id="sHeroText" maxlength="300"></textarea></label>
+      </div>
+      <div class="acard">
+        <div class="aactions">
+          <button class="abtn primary" id="saveSettings">Save Settings</button>
+          <button class="abtn ghost" id="revertSettings">Revert</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="apanel" id="tab-security">
+      <div class="acard">
+        <h3>Admin Password</h3>
+        <p class="hint">Minimum 10 characters. Use a mix of letters, numbers and symbols.</p>
+        <div class="err" id="pwErr" role="alert"></div>
+        <label class="field"><span>Current password</span><input type="password" id="cpOld" autocomplete="current-password" /></label>
+        <div class="agrid">
+          <label class="field"><span>New password</span><input type="password" id="cpNew" autocomplete="new-password" /></label>
+          <label class="field"><span>Confirm new password</span><input type="password" id="cpConfirm" autocomplete="new-password" /></label>
+        </div>
+        <div class="pw-meter">
+          <div class="pw-meter-bar"><div class="pw-meter-fill" id="cpFill"></div></div>
+          <small id="cpHint">Strength: —</small>
+        </div>
+        <div class="aactions">
+          <button class="abtn primary" id="changePwBtn">Update Password</button>
+        </div>
+      </div>
+
+      <div class="acard">
+        <h3>Active Session</h3>
+        <p class="hint">Sessions expire automatically after 30 minutes of inactivity.</p>
+        <div class="kv"><span>Status</span><strong id="sessStatus">—</strong></div>
+        <div class="kv"><span>Expires at</span><strong id="sessExpires">—</strong></div>
+        <div class="aactions">
+          <button class="abtn ghost" id="extendSession">Extend session</button>
+        </div>
+      </div>
+
+      <div class="acard">
+        <h3>Recent Activity</h3>
+        <p class="hint">Failed login attempts are throttled: 5 tries → 30 min lockout.</p>
+        <div id="activityLog" class="activity"></div>
+      </div>
+    </section>
+
+    <section class="apanel" id="tab-backup">
+      <div class="acard">
+        <h3>Export Backup</h3>
+        <p class="hint">Download a signed JSON file containing products, settings and a verification hash.</p>
+        <div class="aactions">
+          <button class="abtn primary" id="exportBtn">⬇️ Download Backup</button>
+        </div>
+      </div>
+      <div class="acard">
+        <h3>Import Backup</h3>
+        <p class="hint">The file's integrity hash is verified before restoring. Tampered files are rejected.</p>
+        <div class="aactions">
+          <button class="abtn ghost" id="importBtn">⬆️ Choose Backup File</button>
+          <input type="file" id="importFile" accept="application/json,.json" hidden />
+        </div>
+      </div>
+      <div class="acard">
+        <h3>Storage</h3>
+        <p class="hint" id="storageInfo">Calculating…</p>
+      </div>
+      <div class="acard">
+        <h3>Danger Zone</h3>
+        <p class="hint">Wipes all products and settings, restoring factory defaults.</p>
+        <div class="aactions">
+          <button class="abtn danger" id="resetBtn">🗑️ Reset to Factory Defaults</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="modal-back" id="prodModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <h3 id="prodModalTitle">Add Product</h3>
+    <p class="sub">Fields marked * are required.</p>
+    <form id="prodForm" novalidate>
+      <input type="hidden" id="pId" />
+      <label class="field"><span>Product name *</span><input id="pName" required maxlength="120" /></label>
+      <div class="agrid">
+        <label class="field"><span>Category *</span><input id="pCat" list="catList" required maxlength="40" /></label>
+        <label class="field"><span>Badge text</span><input id="pTag" maxlength="20" placeholder="e.g. Best Seller" /></label>
+        <label class="field"><span>Price (GH₵) *</span><input id="pPrice" type="number" min="0" step="1" required /></label>
+        <label class="field"><span>Old price</span><input id="pOld" type="number" min="0" step="1" /></label>
+      </div>
+      <datalist id="catList"></datalist>
+      <label class="field">
+        <span>Product image</span>
+        <div class="img-input-row">
+          <input id="pThumb" maxlength="2000000" placeholder="https://…/photo.jpg  — or upload" />
+          <button type="button" class="abtn ghost" id="pThumbUploadBtn">📁 Upload</button>
+          <button type="button" class="abtn ghost" id="pThumbClearBtn">✕</button>
+        </div>
+        <input type="file" id="pThumbFile" accept="image/*" hidden />
+        <div class="img-preview" id="pThumbPreview" hidden><img alt="" /></div>
+        <small>Upload a photo or paste an image URL. Emoji also work.</small>
+      </label>
+      <label class="field"><span>Short specs</span><input id="pSpecs" maxlength="160" placeholder="Frost-free • Inverter • Silver" /></label>
+      <label class="field"><span>Full description</span><textarea id="pDesc" maxlength="1200" placeholder="Write a longer description shown when customers click the product…"></textarea><small>Optional — appears in the product detail view.</small></label>
+      <div class="modal-actions">
+        <button type="button" class="btn-line" id="prodCancel">Cancel</button>
+        <button type="submit" class="btn-solid">Save Product</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/config.js"></script>
+<script src="js/security.js"></script>
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
