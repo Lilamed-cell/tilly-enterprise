@@ -1,8 +1,8 @@
 'use strict';
 
 const CONFIG = Object.freeze({
-  VERSION: '2.0.1',
-  APP_NAME: 'TheTilly Enterprise',
+  VERSION: '2.0.2',
+  APP_NAME: 'TheTil Enterprise',
 
   KEYS: {
     DATA:       'tilly_data_v2',
@@ -49,12 +49,12 @@ const CONFIG = Object.freeze({
 
   DEFAULTS: {
     settings: {
-      storeName: 'TheTilly Enterprise',
+      storeName: 'TheTil Enterprise',
       currency:  'GH₵',
       whatsapp:  '233241656484',
-      footName:  'TheTilly Enterprise Ghana Ltd.',
+      footName:  'TheTil Enterprise Ghana Ltd.',
       topbar:    '🚚 Free delivery around Kumasi - orders over GH₵ 20,000  •   ☎️ +233 24 165 6484 ☎️ +233 20 717 0077',
-      heroTitle: 'TheTilly Enterprise: Power your home. Upgrade your life.',
+      heroTitle: 'TheTil Enterprise: Power your home. Upgrade your life.',
       heroText:  'Genuine fridges, TVs, Phones, Washing Machines, Ovens and complete Solar Systems — with warranty, nationwide delivery and installation across Ghana.',
       heroBackground: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?auto=format&fit=crop&w=1600&q=80'
     },
